@@ -24,17 +24,17 @@ public class ItemController {
 	private UserService userService;
 
 	@GetMapping("/item")
-	public Page<Item> item(@RequestParam(value = "page", defaultValue = "0") int page,
+	public Page<ItemForList> item(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "itemsPerPage", defaultValue = "0") int itemsPerPage) {
 		if (itemsPerPage == 0)
 			itemsPerPage = 10;
 		var paginator = PageRequest.of(page, itemsPerPage, Sort.by("id").ascending());
 
-		return itemService.findAll(paginator);
+		return itemService.findAllForList(paginator);
 	}
 
 	@GetMapping("/item/{itemId}")
-	public Item getSingleItem(@PathVariable(value = "itemId") Long id) throws Exception {
+	public ItemForList getSingleItem(@PathVariable(value = "itemId") Long id) throws Exception {
 		var result = itemService.findById(id);
 		if (result == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CHECK YOUR REQUEST");
@@ -53,7 +53,7 @@ public class ItemController {
 		if (!item.isValid()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		if (item.getColumn() == null) {
 			this.setDefaultColumn(item, userService.getByUsername(authentication.getName()));
 		}
@@ -64,12 +64,11 @@ public class ItemController {
 			tmpUserSet = loggedinUser;
 			item.setUser(tmpUserSet);
 
-			itemService.saveItem(item);
+			return itemService.saveItem(item);
 		}
 		return item;
+
 	}
-
-
 
 	/*
 	 * @PutMapping(path = "/item/{itemId}") // Map ONLY POST Requests public Item
@@ -95,17 +94,12 @@ public class ItemController {
 	 */
 
 	private void setDefaultColumn(Item item, User user) throws Exception {
-		if(user.getTeams().size() != 1) {
+		if (user.getTeams().size() != 1) {
 			throw new Exception("Cannot set default column. Specify one.");
 		}
-		
-		item.setColumn(
-			columnService.findByTeamId(   user.getTeams().stream().findFirst().get().getId()   )
-				.stream()
-				.sorted((a, b) -> a.getSequence() < b.getSequence()? -1: 1)
-				.findFirst()
-				.get()
-		);
+
+		item.setColumn(columnService.findByTeamId(user.getTeams().stream().findFirst().get().getId()).stream()
+				.sorted((a, b) -> a.getSequence() < b.getSequence() ? -1 : 1).findFirst().get());
 	}
 
 	@PutMapping(path = "/item/{itemId}") // Map ONLY POST Requests
