@@ -2,9 +2,11 @@ package com.example.restservice.models;
 
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ColumnModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +29,15 @@ public class ColumnModel {
 		this.name = name;
 		this.colour = colour;
 		this.sequence = sequence;
+	}
+	
+
+	public List<ItemModel> getItems() {
+		return itemModel;
+	}
+
+	public void setItems(List<ItemModel> itemModel) {
+		this.itemModel = itemModel;
 	}
 
 	public void setTeam(TeamModel team) {

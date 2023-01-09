@@ -32,6 +32,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 			try {
 				username = tokenManager.getUsernameFromToken(token);
 				
+				if(tokenManager.isTokenExpired(token)) {
+					throw new ServletException("Token has expired");
+				}
+				
 				var ud = userService.loadUserByUsername(username);
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						ud, null, ud.getAuthorities());

@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Table(name = "userModel")
 @Entity // This tells Hibernate to make a table out of this class
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,7 @@ public class UserModel {
 	private Collection<TeamModel> teams = new HashSet<TeamModel>();
 
 	@OneToMany(mappedBy = "userModel")
+	//@JsonManagedReference
 	private List<ItemModel> itemModel;
 
 	public UserModel() {

@@ -3,11 +3,11 @@ package com.example.restservice.models;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table(name = "teamModel")
 @Entity // This tells Hibernate to make a table out of this class
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class TeamModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

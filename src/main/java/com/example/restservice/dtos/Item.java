@@ -2,7 +2,6 @@ package com.example.restservice.dtos;
 
 import java.util.Date;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Item {
 	private Long id;
@@ -10,13 +9,15 @@ public class Item {
 	private String title;
 	private Date dueDate;
 
-	private List<Comment> comment;
+	private List<CommentNoItem> comment;
+
 	private User user;
+
 	private Column column;
 
-	@JsonIgnore
 	public boolean isValid() {
-		return !(title == null || title.isEmpty() || body == null || body.isEmpty() || column == null || column.getId() == 0);
+		return !(title == null || title.isEmpty() || body == null || body.isEmpty() || column == null
+				|| column.getId() == 0);
 	}
 
 	public Long getId() {
@@ -51,11 +52,11 @@ public class Item {
 		this.dueDate = dueDate;
 	}
 
-	public List<Comment> getComment() {
+	public List<CommentNoItem> getComment() {
 		return comment;
 	}
 
-	public void setComment(List<Comment> comment) {
+	public void setComment(List<CommentNoItem> comment) {
 		this.comment = comment;
 	}
 

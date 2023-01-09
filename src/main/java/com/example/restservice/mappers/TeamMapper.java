@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import com.example.restservice.dtos.*;
 import com.example.restservice.models.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserNoTeamsMapper.class})
 public interface TeamMapper {
 
 	TeamMapper INSTANCE = Mappers.getMapper(TeamMapper.class);

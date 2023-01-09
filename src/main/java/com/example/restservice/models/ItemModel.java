@@ -3,7 +3,6 @@ package com.example.restservice.models;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class ItemModel {
@@ -12,6 +11,10 @@ public class ItemModel {
 	private Long id;
 	private String body;
 	private String title;
+	
+	// assign current time
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date dueDate;
 
 	@ManyToOne
@@ -20,7 +23,7 @@ public class ItemModel {
 	@OneToMany(mappedBy = "itemModel")
 	private List<CommentModel> commentModel;
 
-	@ManyToOne
+	@ManyToOne 
 	private UserModel userModel;
 
 	public ItemModel() {
@@ -83,7 +86,6 @@ public class ItemModel {
 		this.body = body;
 	}
 
-	@JsonIgnore
 	public boolean isValid() {
 		return !(title == null || title.isEmpty() || body == null || body.isEmpty() || columnModel.getId() == 0);
 	}

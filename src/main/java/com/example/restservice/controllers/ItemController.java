@@ -19,9 +19,12 @@ public class ItemController {
 	@Autowired
 	private ColumnService columnService;
 	@Autowired
+	private CommentService commentService;
+	@Autowired
 	private TeamService teamService;
 	@Autowired
 	private UserService userService;
+
 
 	@GetMapping("/item")
 	public Page<ItemForList> item(@RequestParam(value = "page", defaultValue = "0") int page,
@@ -40,6 +43,14 @@ public class ItemController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CHECK YOUR REQUEST");
 		}
 		return result;
+	}
+	
+	@GetMapping("/item/{itemId}/comments")
+	public Page<CommentForList> itemComments(@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "itemsPerPage", defaultValue = "0") int itemsPerPage,
+			@PathVariable(value = "commentId") Long itemId) {
+		var paginator = PageRequest.of(page, itemsPerPage, Sort.by("id").ascending());
+		return commentService.findByItemId(itemId, paginator);
 	}
 
 	@DeleteMapping("/item/{itemId}")
@@ -66,7 +77,7 @@ public class ItemController {
 
 			return itemService.saveItem(item);
 		}
-		return item;
+		return itemService.saveItem(item);
 
 	}
 
@@ -103,27 +114,38 @@ public class ItemController {
 	}
 
 	@PutMapping(path = "/item/{itemId}") // Map ONLY POST Requests
-	public Item updateItem(Authentication authentication, @PathVariable(value = "itemId") Long id,
+	public ItemForList updateItem(Authentication authentication, @PathVariable(value = "itemId") Long itemId,
 			@RequestBody Item item) throws Exception {
 
-		if (!item.isValid() || item.getId() != id) {
+		if (!item.isValid() || item.getId() != itemId) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 
+
+		//boolean isInTeam = teamService.findById(id).getUsers().stream().mapToLong(u -> u.getId())
+		//		.anyMatch(l -> l == loggedinUser.getId());
+
 		var loggedinUser = userService.getByUsername(authentication.getName());
-
-		boolean isInTeam = teamService.findById(id).getUsers().stream().mapToLong(u -> u.getId())
-				.anyMatch(l -> l == loggedinUser.getId());
-
+		boolean isInTeam = userService.isMemberOfTeam(loggedinUser.getId(), 
+				columnService.findById(itemService.findById(itemId).getColumn().getId()).getTeam().getId());
+		
 		if (!isInTeam) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 
 		try {
-			return itemService.updateItem(id, item);
+			return itemService.updateItem(itemId, item);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 }

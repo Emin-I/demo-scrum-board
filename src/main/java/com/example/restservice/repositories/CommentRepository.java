@@ -12,7 +12,7 @@ import com.example.restservice.models.CommentModel;
 
 public interface CommentRepository extends PagingAndSortingRepository<CommentModel, Long> {
 	@Query(value = "SELECT * FROM comment_model c WHERE c.item_model_id = ?1", nativeQuery = true)
-	Page<CommentModel> findByItemId(int itemId, PageRequest pr);
+	Page<CommentModel> findByItemId(Long itemId, PageRequest pr);
 
 	@Query(value = "SELECT * FROM comment_model c WHERE c.comment_parent_id = ?1", nativeQuery = true)
 	List<CommentModel> findAllByParentId(Long commentId);

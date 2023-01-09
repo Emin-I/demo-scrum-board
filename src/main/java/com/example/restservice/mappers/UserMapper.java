@@ -7,21 +7,17 @@ import org.mapstruct.factory.Mappers;
 import com.example.restservice.dtos.*;
 import com.example.restservice.models.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {TeamNoUsersMapper.class})
 public interface UserMapper {
 
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-	@Mapping(target = "teams", ignore = true)
 	User mapToDto(UserModel userModel);
 
-	@Mapping(target = "teams", ignore = true)
 	List<User> mapToDtos(List<UserModel> userModels);
 
-	@Mapping(target = "teams", ignore = true)
 	UserModel mapFromDto(User userDto);
 
-	@Mapping(target = "teams", ignore = true)
 	List<UserModel> mapFromDtos(List<User> userDtos);
 
 }

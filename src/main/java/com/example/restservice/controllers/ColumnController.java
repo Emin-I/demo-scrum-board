@@ -22,17 +22,17 @@ public class ColumnController {
 	private UserService userService;
 
 	@GetMapping("/column")
-	public Page<Column> column(@RequestParam(value = "page", defaultValue = "0") int page,
+	public Page<ColumnForList> column(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "itemsPerPage", defaultValue = "0") int itemsPerPage) {
 		if (itemsPerPage == 0)
 			itemsPerPage = 10;
 		var paginator = PageRequest.of(page, itemsPerPage, Sort.by("id").ascending());
 
-		return columnService.findAll(paginator);
+		return columnService.findAllForList(paginator);
 	}
 
 	@GetMapping("/column/{columnId}")
-	public Column getSingleColumn(@PathVariable(value = "columnId") Long id) throws Exception {
+	public ColumnForList getSingleColumn(@PathVariable(value = "columnId") Long id) throws Exception {
 		var result = columnService.findById(id);
 		if (result == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "CHECK YOUR REQUEST!\n");
@@ -57,28 +57,30 @@ public class ColumnController {
 	}
 
 	@PutMapping(path = "/column/{columnId}") // Map ONLY POST Requests
-	public Column updateColumn(Authentication authentication, @PathVariable(value = "columnId") Long id,
+	public ColumnForList updateColumn(Authentication authentication, @PathVariable(value = "columnId") Long columnId,
 			@RequestBody Column column) throws Exception {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
 
-		if (!column.isValid() || column.getId() != id) {
+		if (!column.isValid() || column.getId() != columnId) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 
+		
 		var loggedinUser = userService.getByUsername(authentication.getName());
+		boolean isInTeam = userService.isMemberOfTeam(loggedinUser.getId(), columnService.findById(columnId).getTeam().getId());
 
-		boolean isInTeam = teamService.findById(id).getUsers().stream().mapToLong(u -> u.getId())
-				.anyMatch(l -> l == loggedinUser.getId());
+		//boolean isInTeam = teamService.findById(columnId).getUsers().stream().mapToLong(u -> u.getId())
+		//		.anyMatch(l -> l == loggedinUser.getId());
 
 		if (!isInTeam) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 
 		try {
-			return columnService.updateColumn(id, column);
+			return columnService.updateColumn(columnId, column);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 	}
 

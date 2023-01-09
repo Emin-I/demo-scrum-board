@@ -1,19 +1,26 @@
 package com.example.restservice.mappers;
 
+import com.example.restservice.dtos.TeamNoUsers;
 import com.example.restservice.dtos.User;
+import com.example.restservice.models.TeamModel;
 import com.example.restservice.models.UserModel;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-12-22T12:40:57+0100",
+    date = "2023-01-09T17:17:01+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.4.1 (Eclipse Adoptium)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
+
+    @Autowired
+    private TeamNoUsersMapper teamNoUsersMapper;
 
     @Override
     public User mapToDto(UserModel userModel) {
@@ -30,6 +37,7 @@ public class UserMapperImpl implements UserMapper {
         user.setMail( userModel.getMail() );
         user.setAge( userModel.getAge() );
         user.setPassword( userModel.getPassword() );
+        user.setTeams( teamModelCollectionToTeamNoUsersCollection( userModel.getTeams() ) );
 
         return user;
     }
@@ -56,6 +64,7 @@ public class UserMapperImpl implements UserMapper {
 
         UserModel userModel = new UserModel();
 
+        userModel.setTeams( teamNoUsersCollectionToTeamModelCollection( userDto.getTeams() ) );
         userModel.setId( userDto.getId() );
         userModel.setFirstName( userDto.getFirstName() );
         userModel.setLastName( userDto.getLastName() );
@@ -79,5 +88,31 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return list;
+    }
+
+    protected Collection<TeamNoUsers> teamModelCollectionToTeamNoUsersCollection(Collection<TeamModel> collection) {
+        if ( collection == null ) {
+            return null;
+        }
+
+        Collection<TeamNoUsers> collection1 = new ArrayList<TeamNoUsers>( collection.size() );
+        for ( TeamModel teamModel : collection ) {
+            collection1.add( teamNoUsersMapper.mapToDto( teamModel ) );
+        }
+
+        return collection1;
+    }
+
+    protected Collection<TeamModel> teamNoUsersCollectionToTeamModelCollection(Collection<TeamNoUsers> collection) {
+        if ( collection == null ) {
+            return null;
+        }
+
+        Collection<TeamModel> collection1 = new ArrayList<TeamModel>( collection.size() );
+        for ( TeamNoUsers teamNoUsers : collection ) {
+            collection1.add( teamNoUsersMapper.mapFromDto( teamNoUsers ) );
+        }
+
+        return collection1;
     }
 }

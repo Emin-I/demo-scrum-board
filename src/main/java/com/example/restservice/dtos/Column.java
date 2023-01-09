@@ -10,7 +10,7 @@ public class Column {
 	private String colour;
 	private int sequence;
 
-	private List<Item> item;
+	private List<Item> items;
 	private Team team;
 
 	@JsonIgnore
@@ -50,12 +50,12 @@ public class Column {
 		this.sequence = sequence;
 	}
 
-	public List<Item> getItem() {
-		return item;
+	public List<Item> getItems() {
+		return items;
 	}
 
-	public void setItem(List<Item> item) {
-		this.item = item;
+	public void setItem(List<Item> items) {
+		this.items = items;
 	}
 
 	public Team getTeam() {

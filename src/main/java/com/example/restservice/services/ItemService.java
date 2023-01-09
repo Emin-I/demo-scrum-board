@@ -1,10 +1,13 @@
 package com.example.restservice.services;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.restservice.dtos.*;
+import com.example.restservice.mappers.ItemForListMapper;
 import com.example.restservice.mappers.ItemMapper;
 import com.example.restservice.repositories.ColumnRepository;
 import com.example.restservice.repositories.ItemRepository;
@@ -17,6 +20,9 @@ public class ItemService {
 
 	@Autowired
 	private ItemMapper itemMapper;
+	
+	@Autowired
+	private ItemForListMapper itemForListMapper;
 
 	@Autowired
 	private ColumnRepository columnRepository;
@@ -24,16 +30,20 @@ public class ItemService {
 	public Page<Item> findAll(Pageable query) {
 		return this.itemRepository.findAll(query).map(p -> itemMapper.mapToDto(p));
 	}
+	
+	public Page<ItemForList> findAllForList(Pageable query) {
+		return this.itemRepository.findAll(query).map(p -> itemForListMapper.mapToDto(p));		
+	}
 
-	public Item findById(Long id) throws Exception {
-		return itemMapper.mapToDto(itemRepository.findById(id).orElseThrow(() -> new Exception("Not found")));
+	public ItemForList findById(Long id) throws Exception {
+		return itemForListMapper.mapToDto(itemRepository.findById(id).orElseThrow(() -> new Exception("Not found")));
 	}
 
 	public void deleteById(Long id) {
 		itemRepository.deleteById(id);
 	}
 
-	public Item updateItem(Long id, Item item) throws Exception {
+	public ItemForList updateItem(Long id, Item item) throws Exception {
 		var current = itemRepository.findById(id).orElseThrow(() -> new Exception("Not found"));
 
 		// var columnResult = columnService.findById(itemModel.getColumn().getId());
@@ -54,7 +64,7 @@ public class ItemService {
 		// Exception("Not found")));
 		
 		
-		current.setId(item.getId());
+		//current.setId(item.getId());
 		current.setBody(item.getBody());
 		current.setTitle(item.getTitle());
 		current.setDueDate(item.getDueDate());
@@ -64,7 +74,7 @@ public class ItemService {
 		// item.setColumn(columnResult==null ? null : columnResult);
 		// this.saveItem(current);
 		itemRepository.save(current);
-		return itemMapper.mapToDto(current);
+		return itemForListMapper.mapToDto(current);
 
 	}
 

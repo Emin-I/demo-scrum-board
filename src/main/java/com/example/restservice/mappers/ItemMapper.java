@@ -9,7 +9,6 @@ import com.example.restservice.models.ItemModel;
 
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
-
 	ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
 	Item mapToDto(ItemModel itemModel);
@@ -19,4 +18,5 @@ public interface ItemMapper {
 	ItemModel mapFromDto(Item itemDto);
 
 	List<ItemModel> mapFromDtos(List<Item> itemDtos);
+
 }

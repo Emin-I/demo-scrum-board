@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 import com.example.restservice.dtos.Column;
 import com.example.restservice.models.ColumnModel;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { TeamNoUsersMapper.class })
 public interface ColumnMapper {
 
 	ColumnMapper INSTANCE = Mappers.getMapper(ColumnMapper.class);

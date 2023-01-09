@@ -7,11 +7,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity // This tells Hibernate to make a table out of this class
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class CommentModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String body;
+	
+	// assign current time
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
+	private Date postedDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -28,11 +34,6 @@ public class CommentModel {
 
 	@ManyToOne
 	private ItemModel itemModel;
-
-	// assign current time
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
-	private Date postedDate;
 
 	@PrePersist
 	private void sendCommentDate() {
