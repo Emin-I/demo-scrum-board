@@ -2,22 +2,26 @@ package com.example.restservice.dtos;
 
 import java.util.Date;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-public class CommentForList {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class CommentNoRecursion {
 
 	private Long id;
 	private String body;
 	private Date postedDate;
+/*
+	@JsonIgnoreProperties("commentChildren")
 	private CommentForList commentParent;
-
+*/
 	@JsonIgnore
 	private List<CommentNoRecursion> commentChildren;
 
 	private UserNoTeams user;
 
-	@JsonIgnore
 	private ItemForList item;
 
 	@JsonIgnore
@@ -48,7 +52,8 @@ public class CommentForList {
 	public void setPostedDate(Date postedDate) {
 		this.postedDate = postedDate;
 	}
-
+/*
+	@JsonBackReference
 	public CommentForList getCommentParent() {
 		return commentParent;
 	}
@@ -56,7 +61,8 @@ public class CommentForList {
 	public void setCommentParent(CommentForList commentParent) {
 		this.commentParent = commentParent;
 	}
-
+*/
+	@JsonManagedReference
 	public List<CommentNoRecursion> getCommentChildren() {
 		return commentChildren;
 	}

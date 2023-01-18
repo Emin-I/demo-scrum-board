@@ -24,10 +24,9 @@ public class UserService implements org.springframework.security.core.userdetail
 
 	@Autowired
 	private UserMapper userMapper;
-	
+
 	@Autowired
 	private UserMapperForAuthFilter userMapperForAuthFilter;
-	
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,14 +41,7 @@ public class UserService implements org.springframework.security.core.userdetail
 
 	public User save(User user) {
 		return userMapper.mapToDto(userRepository.save(userMapper.mapFromDto(user)));
-		/*
-		var entity = userMapper.mapFromDto(user);
-		var newEntity = userRepository.save(entity);
-		Long idd=newEntity.getId();
-		var dto = userMapper.mapToDto(newEntity);
-		dto.setId(idd);
-		return dto;
-		*/
+
 	}
 
 	public User updateUser(Long id, User user) throws Exception {
@@ -58,7 +50,7 @@ public class UserService implements org.springframework.security.core.userdetail
 
 		var teamIds = new ArrayList<Long>();
 		user.getTeams().forEach((team) -> teamIds.add(team.getId()));
-		
+
 		var teamsResult = new ArrayList<TeamModel>();
 		teamRepository.findAllById(teamIds).forEach(team -> teamsResult.add(team));
 
@@ -68,7 +60,7 @@ public class UserService implements org.springframework.security.core.userdetail
 		currentModel.setAge(user.getAge());
 		currentModel.setTeams(teamsResult);
 		return userMapper.mapToDto(userRepository.save(currentModel));
-		
+
 	}
 
 	public Page<User> findAll(Pageable query) {
@@ -88,8 +80,8 @@ public class UserService implements org.springframework.security.core.userdetail
 	}
 
 	public boolean isMemberOfTeam(Long userId, Long teamId) {
-		 return teamRepository.findById(teamId).get().getUsers().stream().anyMatch(u -> u.getId() == userId );
-		
+		return teamRepository.findById(teamId).get().getUsers().stream().anyMatch(u -> u.getId() == userId);
+
 	}
 
 }

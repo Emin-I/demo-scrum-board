@@ -23,8 +23,10 @@ public class TeamModel {
 		createdDate = new Date();
 	}
 
-	@ManyToMany(mappedBy = "teams", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "teams", cascade = CascadeType.MERGE)
 	private Set<UserModel> users;
+	
+	
 
 	public Set<UserModel> getUsers() {
 		return users;

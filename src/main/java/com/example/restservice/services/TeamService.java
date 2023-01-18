@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.restservice.dtos.Team;
+import com.example.restservice.mappers.TeamMapper;
 import com.example.restservice.models.TeamModel;
 import com.example.restservice.repositories.TeamRepository;
 
@@ -14,19 +15,22 @@ public class TeamService {
 	@Autowired
 	private TeamRepository teamRepository;
 
+	@Autowired
+	private TeamMapper teamMapper;
+
 	public Page<Team> findAll(Pageable query) {
-		return this.teamRepository.findAll(query).map(p -> mapToDto(p));
+		return this.teamRepository.findAll(query).map(p -> teamMapper.mapToDto(p));
 	}
 
 	public Team findById(Long id) throws Exception {
-		return mapToDto(teamRepository.findById(id).orElseThrow(() -> new Exception("Not found")));
+		return teamMapper.mapToDto(teamRepository.findById(id).orElseThrow(() -> new Exception("Not found")));
 	}
 
 	public Team saveTeam(Team team) {
-		var entity = mapFromDto(team);
+		var entity = teamMapper.mapFromDto(team);
 		var newEntity = this.saveTeam(entity);
 
-		return mapToDto(newEntity);
+		return teamMapper.mapToDto(newEntity);
 	}
 
 	private TeamModel saveTeam(TeamModel team) {
@@ -42,9 +46,9 @@ public class TeamService {
 		var current = teamRepository.findById(id).orElseThrow(() -> new Exception("Not found"));
 		current.setName(team.getName());
 		this.saveTeam(current);
-		return mapToDto(current);
+		return teamMapper.mapToDto(current);
 	}
-
+/*
 	public Team mapToDto(TeamModel teamModel) {
 		var team = new Team();
 		team.setId(teamModel.getId());
@@ -60,5 +64,5 @@ public class TeamService {
 		team.setCreatedDate(teamDto.getCreatedDate());
 		return team;
 	}
-
+*/
 }

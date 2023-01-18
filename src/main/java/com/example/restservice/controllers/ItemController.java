@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,11 +21,10 @@ public class ItemController {
 	private ColumnService columnService;
 	@Autowired
 	private CommentService commentService;
-	@Autowired
-	private TeamService teamService;
+	// @Autowired
+//	private TeamService teamService;
 	@Autowired
 	private UserService userService;
-
 
 	@GetMapping("/item")
 	public Page<ItemForList> item(@RequestParam(value = "page", defaultValue = "0") int page,
@@ -44,9 +44,9 @@ public class ItemController {
 		}
 		return result;
 	}
-	
+
 	@GetMapping("/item/{itemId}/comments")
-	public Page<CommentForList> itemComments(@RequestParam(value = "page", defaultValue = "0") int page,
+	public Page<CommentNoRecursion> itemComments(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "itemsPerPage", defaultValue = "0") int itemsPerPage,
 			@PathVariable(value = "commentId") Long itemId) {
 		var paginator = PageRequest.of(page, itemsPerPage, Sort.by("id").ascending());
@@ -55,7 +55,11 @@ public class ItemController {
 
 	@DeleteMapping("/item/{itemId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT, reason = "OK")
-	public void deleteItem(@PathVariable(value = "itemId") Long id) {
+	public void deleteItem(@PathVariable(value = "itemId") Long id) throws Exception {
+
+		if (itemService.findById(id) == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
 		itemService.deleteById(id);
 	}
 
@@ -77,32 +81,10 @@ public class ItemController {
 
 			return itemService.saveItem(item);
 		}
-		return itemService.saveItem(item);
+		var itemReturn = itemService.saveItem(item);
+		return itemReturn;
 
 	}
-
-	/*
-	 * @PutMapping(path = "/item/{itemId}") // Map ONLY POST Requests public Item
-	 * updateItem(@PathVariable(value = "itemId") Long id, @RequestBody Item item) {
-	 * // @ResponseBody means the returned String is the response, not a view name
-	 * // @RequestParam means it is a parameter from the GET or POST request
-	 * 
-	 * if (!item.isValid()) { throw new
-	 * ResponseStatusException(HttpStatus.BAD_REQUEST); }
-	 * 
-	 * var currentItem = itemService.findById(id).orElseThrow(() -> new
-	 * ResponseStatusException(HttpStatus.NOT_FOUND));
-	 * 
-	 * var columnResult = columnService.findById(item.getColumn().getId());
-	 * 
-	 * currentItem.setTitle(item.getTitle()); currentItem.setBody(item.getBody());
-	 * currentItem.setDueDate(item.getDueDate());
-	 * currentItem.setColumn(columnResult.isEmpty() ? null : columnResult.get());
-	 * 
-	 * ItemRepository.save(currentItem);
-	 * 
-	 * return currentItem; }
-	 */
 
 	private void setDefaultColumn(Item item, User user) throws Exception {
 		if (user.getTeams().size() != 1) {
@@ -121,14 +103,14 @@ public class ItemController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 
-
-		//boolean isInTeam = teamService.findById(id).getUsers().stream().mapToLong(u -> u.getId())
-		//		.anyMatch(l -> l == loggedinUser.getId());
+		// boolean isInTeam = teamService.findById(id).getUsers().stream().mapToLong(u
+		// -> u.getId())
+		// .anyMatch(l -> l == loggedinUser.getId());
 
 		var loggedinUser = userService.getByUsername(authentication.getName());
-		boolean isInTeam = userService.isMemberOfTeam(loggedinUser.getId(), 
+		boolean isInTeam = userService.isMemberOfTeam(loggedinUser.getId(),
 				columnService.findById(itemService.findById(itemId).getColumn().getId()).getTeam().getId());
-		
+
 		if (!isInTeam) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
@@ -139,13 +121,5 @@ public class ItemController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
 		}
 
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 }

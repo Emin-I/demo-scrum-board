@@ -21,8 +21,6 @@ public class TeamController {
 	private UserService userService;
 	@Autowired
 	private TeamService teamService;
-	//@Autowired
-	//private UserDtoDtoMapper userDtoDtoMapper;
 	
 	@GetMapping("/team")
 	public Page<Team> team(@RequestParam(value = "page", defaultValue = "0") int page,
@@ -48,7 +46,8 @@ public class TeamController {
 		if (!team.isValid() || team.getId() != null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CHECK YOUR REQUEST!\n");
 		}
-		if (team.getUsers().size() == 0) {
+		if (team.getUsers()==null)//.size() == 0 || team.getUsers().equals(null) ) 
+				{
 			var loggedinUser = userService.getByUsername(authentication.getName());
 			
 			var userNoTeams = new UserNoTeams();
@@ -56,8 +55,9 @@ public class TeamController {
 			userNoTeams.setUsername(loggedinUser.getUsername());
 			
 			var tmpUserSet = new HashSet<UserNoTeams>();
-			tmpUserSet.add(userNoTeams);//userDtoDtoMapper.mapToNoTeams(loggedinUser));
+			tmpUserSet.add(userNoTeams);
 			team.setUsers(tmpUserSet);
+			return teamService.saveTeam(team);
 		}
 		return teamService.saveTeam(team);
 	}

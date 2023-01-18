@@ -20,7 +20,7 @@ public class UserModel {
 	private String mail;
 	private int age;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "rel_user_team", joinColumns = @JoinColumn(name = "user_model_id"), inverseJoinColumns = @JoinColumn(name = "team_model_id"))
 	private Collection<TeamModel> teams = new HashSet<TeamModel>();
 

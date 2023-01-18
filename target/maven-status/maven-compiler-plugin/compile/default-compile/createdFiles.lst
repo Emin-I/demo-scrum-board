@@ -2,6 +2,7 @@ com\example\restservice\mappers\TeamNoUsersMapper.class
 com\example\restservice\dtos\ItemNoComments.class
 com\example\restservice\mappers\UserMapperForAuthFilterImpl.class
 com\example\restservice\dtos\Item.class
+com\example\restservice\dtos\CommentNoRecursion.class
 com\example\restservice\dtos\CommentNoItem.class
 com\example\restservice\controllers\AuthController.class
 com\example\restservice\dtos\User.class
@@ -27,6 +28,7 @@ com\example\restservice\mappers\TeamNoUsersMapperImpl.class
 com\example\restservice\repositories\ItemRepository.class
 com\example\restservice\repositories\TeamRepository.class
 com\example\restservice\controllers\CommentController.class
+com\example\restservice\mappers\CommentNoRecursionMapper.class
 com\example\restservice\repositories\UserRepository.class
 com\example\restservice\mappers\UserNoTeamsMapperImpl.class
 com\example\restservice\mappers\ColumnForListMapperImpl.class
@@ -35,6 +37,7 @@ com\example\restservice\dtos\JwtRequest.class
 com\example\restservice\controllers\ColumnController.class
 com\example\restservice\mappers\ColumnForListMapper.class
 com\example\restservice\mappers\CommentMapper.class
+com\example\restservice\mappers\CommentNoRecursionMapperImpl.class
 com\example\restservice\models\UserModel.class
 com\example\restservice\models\ColumnModel.class
 com\example\restservice\mappers\CommentMapperImpl.class
@@ -53,10 +56,12 @@ com\example\restservice\services\TokenService.class
 com\example\restservice\mappers\CommentForListMapperImpl.class
 com\example\restservice\dtos\CommentForList.class
 com\example\restservice\mappers\UserNoTeamsMapper.class
+com\example\restservice\mappers\ColumnNoItemMapper.class
 com\example\restservice\dtos\TeamNoUsers.class
 com\example\restservice\services\CommentService.class
 com\example\restservice\mappers\ItemNoCommentsMapper.class
 com\example\restservice\controllers\ItemController.class
+com\example\restservice\mappers\ColumnNoItemMapperImpl.class
 com\example\restservice\controllers\TeamController.class
 com\example\restservice\mappers\UserMapperForAuthFilter.class
 com\example\restservice\mappers\CommentForListMapper.class

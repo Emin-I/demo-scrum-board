@@ -1,6 +1,8 @@
 package com.example.restservice.models;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
@@ -24,13 +26,16 @@ public class ColumnModel {
 	public ColumnModel() {
 	}
 
-	public ColumnModel(Long id, String name, String colour, int sequence) {
+	@JsonCreator
+	public ColumnModel(Long id, String name, String colour, int sequence, TeamModel teamModel,
+			List<ItemModel> itemModel) {
 		this.id = id;
 		this.name = name;
 		this.colour = colour;
 		this.sequence = sequence;
+		this.teamModel = teamModel;
+		this.itemModel = itemModel;
 	}
-	
 
 	public List<ItemModel> getItems() {
 		return itemModel;

@@ -1,6 +1,6 @@
 package com.example.restservice.mappers;
 
-import com.example.restservice.dtos.Column;
+import com.example.restservice.dtos.ColumnNoItem;
 import com.example.restservice.dtos.Item;
 import com.example.restservice.dtos.Team;
 import com.example.restservice.dtos.TeamNoUsers;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-01-09T17:17:01+0100",
+    date = "2023-01-18T09:59:46+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.4.1 (Eclipse Adoptium)"
 )
 @Component
@@ -40,7 +40,7 @@ public class ItemMapperImpl implements ItemMapper {
         item.setTitle( itemModel.getTitle() );
         item.setDueDate( itemModel.getDueDate() );
         item.setUser( userModelToUser( itemModel.getUser() ) );
-        item.setColumn( columnModelToColumn( itemModel.getColumn() ) );
+        item.setColumn( columnModelToColumnNoItem( itemModel.getColumn() ) );
 
         return item;
     }
@@ -67,7 +67,7 @@ public class ItemMapperImpl implements ItemMapper {
 
         ItemModel itemModel = new ItemModel();
 
-        itemModel.setColumn( columnToColumnModel( itemDto.getColumn() ) );
+        itemModel.setColumn( columnNoItemToColumnModel( itemDto.getColumn() ) );
         itemModel.setUser( userToUserModel( itemDto.getUser() ) );
         itemModel.setDueDate( itemDto.getDueDate() );
         itemModel.setTitle( itemDto.getTitle() );
@@ -211,20 +211,20 @@ public class ItemMapperImpl implements ItemMapper {
         return team;
     }
 
-    protected Column columnModelToColumn(ColumnModel columnModel) {
+    protected ColumnNoItem columnModelToColumnNoItem(ColumnModel columnModel) {
         if ( columnModel == null ) {
             return null;
         }
 
-        Column column = new Column();
+        ColumnNoItem columnNoItem = new ColumnNoItem();
 
-        column.setId( columnModel.getId() );
-        column.setName( columnModel.getName() );
-        column.setColour( columnModel.getColour() );
-        column.setSequence( columnModel.getSequence() );
-        column.setTeam( teamModelToTeam( columnModel.getTeam() ) );
+        columnNoItem.setId( columnModel.getId() );
+        columnNoItem.setName( columnModel.getName() );
+        columnNoItem.setColour( columnModel.getColour() );
+        columnNoItem.setSequence( columnModel.getSequence() );
+        columnNoItem.setTeam( teamModelToTeam( columnModel.getTeam() ) );
 
-        return column;
+        return columnNoItem;
     }
 
     protected Collection<TeamModel> teamCollectionToTeamModelCollection(Collection<Team> collection) {
@@ -287,18 +287,18 @@ public class ItemMapperImpl implements ItemMapper {
         return teamModel;
     }
 
-    protected ColumnModel columnToColumnModel(Column column) {
-        if ( column == null ) {
+    protected ColumnModel columnNoItemToColumnModel(ColumnNoItem columnNoItem) {
+        if ( columnNoItem == null ) {
             return null;
         }
 
         ColumnModel columnModel = new ColumnModel();
 
-        columnModel.setTeam( teamToTeamModel( column.getTeam() ) );
-        columnModel.setId( column.getId() );
-        columnModel.setName( column.getName() );
-        columnModel.setColour( column.getColour() );
-        columnModel.setSequence( column.getSequence() );
+        columnModel.setTeam( teamToTeamModel( columnNoItem.getTeam() ) );
+        columnModel.setId( columnNoItem.getId() );
+        columnModel.setName( columnNoItem.getName() );
+        columnModel.setColour( columnNoItem.getColour() );
+        columnModel.setSequence( columnNoItem.getSequence() );
 
         return columnModel;
     }

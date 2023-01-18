@@ -15,7 +15,7 @@ public class Column {
 
 	@JsonIgnore
 	public boolean isValid() {
-		return !(name == null || name.isEmpty());
+		return !(name == null || name.isEmpty() || team == null || team.equals(null));
 	}
 
 	public Long getId() {

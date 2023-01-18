@@ -16,8 +16,7 @@ public class User {
 
 	@JsonIgnore
 	public boolean isValid() {
-		return !(mail == null || mail.isEmpty() || password == null || password.isEmpty() || username == null
-				|| username.isEmpty());
+		return !(mail == null || mail.isEmpty() || password == null || password.isEmpty());
 	}
 	
 	private Collection<TeamNoUsers> teams = new HashSet<TeamNoUsers>();

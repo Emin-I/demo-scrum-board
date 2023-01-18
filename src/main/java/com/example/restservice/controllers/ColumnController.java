@@ -66,12 +66,13 @@ public class ColumnController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 
-		
 		var loggedinUser = userService.getByUsername(authentication.getName());
-		boolean isInTeam = userService.isMemberOfTeam(loggedinUser.getId(), columnService.findById(columnId).getTeam().getId());
+		boolean isInTeam = userService.isMemberOfTeam(loggedinUser.getId(),
+				columnService.findById(columnId).getTeam().getId());
 
-		//boolean isInTeam = teamService.findById(columnId).getUsers().stream().mapToLong(u -> u.getId())
-		//		.anyMatch(l -> l == loggedinUser.getId());
+		// boolean isInTeam =
+		// teamService.findById(columnId).getUsers().stream().mapToLong(u -> u.getId())
+		// .anyMatch(l -> l == loggedinUser.getId());
 
 		if (!isInTeam) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);

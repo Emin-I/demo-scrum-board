@@ -3,14 +3,17 @@ C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\ja
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\mappers\ItemMapper.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\controllers\ColumnController.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\controllers\CommentController.java
+C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\mappers\ColumnNoItemMapper.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\dtos\ColumnNoItem.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\dtos\ItemNoComments.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\mappers\UserNoTeamsMapper.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\dtos\Team.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\services\TokenService.java
+C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\mappers\CommentNoRecursionMapper.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\repositories\UserRepository.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\models\ItemModel.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\config\SecurityConfiguration.java
+C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\dtos\CommentNoRecursion.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\repositories\CommentRepository.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\repositories\ItemRepository.java
 C:\Users\motop\eclipse-workspace-motopp\gs-rest-service-main\initial\src\main\java\com\example\restservice\dtos\Column.java

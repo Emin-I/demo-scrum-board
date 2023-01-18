@@ -13,11 +13,10 @@ public class Item {
 
 	private User user;
 
-	private Column column;
+	private ColumnNoItem column;
 
 	public boolean isValid() {
-		return !(title == null || title.isEmpty() || body == null || body.isEmpty() || column == null
-				|| column.getId() == 0);
+		return !(title == null || title.isEmpty() || body == null || body.isEmpty());
 	}
 
 	public Long getId() {
@@ -68,11 +67,11 @@ public class Item {
 		this.user = user;
 	}
 
-	public Column getColumn() {
+	public ColumnNoItem getColumn() {
 		return column;
 	}
 
-	public void setColumn(Column column) {
+	public void setColumn(ColumnNoItem column) {
 		this.column = column;
 	}
 

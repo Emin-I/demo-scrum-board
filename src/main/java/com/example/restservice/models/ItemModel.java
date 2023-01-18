@@ -11,11 +11,16 @@ public class ItemModel {
 	private Long id;
 	private String body;
 	private String title;
-	
+
 	// assign current time
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date dueDate;
+
+	@PrePersist
+	private void onCreate() {
+		dueDate = new Date();
+	}
 
 	@ManyToOne
 	private ColumnModel columnModel;
@@ -23,7 +28,7 @@ public class ItemModel {
 	@OneToMany(mappedBy = "itemModel")
 	private List<CommentModel> commentModel;
 
-	@ManyToOne 
+	@ManyToOne
 	private UserModel userModel;
 
 	public ItemModel() {

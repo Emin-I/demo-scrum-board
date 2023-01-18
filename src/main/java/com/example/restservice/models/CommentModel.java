@@ -3,27 +3,40 @@ package com.example.restservice.models;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity // This tells Hibernate to make a table out of this class
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class CommentModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String body;
-	
+
 	// assign current time
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date postedDate;
 
+	@PrePersist
+	private void sendCommentDate() {
+		postedDate = new Date();
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@JsonIgnoreProperties("commentChildren")
 	private CommentModel commentParent;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "commentParent")
+	@JsonIgnoreProperties("commentParent")
 	private List<CommentModel> commentChildren;
 
 	private boolean thumbsUp;
@@ -32,13 +45,8 @@ public class CommentModel {
 	@ManyToOne
 	private UserModel userModel;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private ItemModel itemModel;
-
-	@PrePersist
-	private void sendCommentDate() {
-		postedDate = new Date();
-	}
 
 	public CommentModel() {
 	}
@@ -67,6 +75,7 @@ public class CommentModel {
 		this.itemModel = item;
 	}
 
+	@JsonBackReference
 	public CommentModel getCommentParent() {
 		return commentParent;
 	}
@@ -75,6 +84,7 @@ public class CommentModel {
 		this.commentParent = commentParent;
 	}
 
+	@JsonManagedReference
 	public List<CommentModel> getCommentChildren() {
 		return commentChildren;
 	}
