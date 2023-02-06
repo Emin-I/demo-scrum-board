@@ -39,7 +39,7 @@ public class UserService implements org.springframework.security.core.userdetail
 		throw new UsernameNotFoundException(username);
 	}
 
-	public User save(User user) {
+	public User saveUser(User user) {
 		return userMapper.mapToDto(userRepository.save(userMapper.mapFromDto(user)));
 
 	}

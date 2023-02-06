@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 import com.example.restservice.dtos.Item;
 import com.example.restservice.models.ItemModel;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserNoTeamsMapper.class})
 public interface ItemMapper {
 	ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 

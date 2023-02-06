@@ -24,8 +24,13 @@ public class UserModel {
 	@JoinTable(name = "rel_user_team", joinColumns = @JoinColumn(name = "user_model_id"), inverseJoinColumns = @JoinColumn(name = "team_model_id"))
 	private Collection<TeamModel> teams = new HashSet<TeamModel>();
 
+	
+
+	@ManyToMany
+	@JoinTable(name = "rel_users_roles", joinColumns = @JoinColumn(name = "user_model_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_model_id", referencedColumnName = "id"))
+	private Collection<RoleModel> roles;
+
 	@OneToMany(mappedBy = "userModel")
-	//@JsonManagedReference
 	private List<ItemModel> itemModel;
 
 	public UserModel() {
@@ -99,7 +104,6 @@ public class UserModel {
 		this.age = age;
 	}
 
-	
 	public String getUsername() {
 		return username;
 	}
@@ -114,6 +118,14 @@ public class UserModel {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Collection<RoleModel> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<RoleModel> roles) {
+		this.roles = roles;
 	}
 
 }

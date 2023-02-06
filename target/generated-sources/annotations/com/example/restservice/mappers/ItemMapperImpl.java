@@ -17,15 +17,19 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-01-18T09:59:46+0100",
+    date = "2023-02-06T15:42:42+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.4.1 (Eclipse Adoptium)"
 )
 @Component
 public class ItemMapperImpl implements ItemMapper {
+
+    @Autowired
+    private UserNoTeamsMapper userNoTeamsMapper;
 
     @Override
     public Item mapToDto(ItemModel itemModel) {
@@ -151,38 +155,6 @@ public class ItemMapperImpl implements ItemMapper {
         return user;
     }
 
-    protected Collection<Team> teamModelCollectionToTeamCollection(Collection<TeamModel> collection) {
-        if ( collection == null ) {
-            return null;
-        }
-
-        Collection<Team> collection1 = new ArrayList<Team>( collection.size() );
-        for ( TeamModel teamModel : collection ) {
-            collection1.add( teamModelToTeam( teamModel ) );
-        }
-
-        return collection1;
-    }
-
-    protected UserNoTeams userModelToUserNoTeams(UserModel userModel) {
-        if ( userModel == null ) {
-            return null;
-        }
-
-        UserNoTeams userNoTeams = new UserNoTeams();
-
-        userNoTeams.setId( userModel.getId() );
-        userNoTeams.setFirstName( userModel.getFirstName() );
-        userNoTeams.setUsername( userModel.getUsername() );
-        userNoTeams.setLastName( userModel.getLastName() );
-        userNoTeams.setMail( userModel.getMail() );
-        userNoTeams.setAge( userModel.getAge() );
-        userNoTeams.setPassword( userModel.getPassword() );
-        userNoTeams.setTeams( teamModelCollectionToTeamCollection( userModel.getTeams() ) );
-
-        return userNoTeams;
-    }
-
     protected HashSet<UserNoTeams> userModelSetToUserNoTeamsHashSet(Set<UserModel> set) {
         if ( set == null ) {
             return null;
@@ -190,7 +162,7 @@ public class ItemMapperImpl implements ItemMapper {
 
         HashSet<UserNoTeams> hashSet = new HashSet<UserNoTeams>();
         for ( UserModel userModel : set ) {
-            hashSet.add( userModelToUserNoTeams( userModel ) );
+            hashSet.add( userNoTeamsMapper.mapToDto( userModel ) );
         }
 
         return hashSet;
@@ -227,38 +199,6 @@ public class ItemMapperImpl implements ItemMapper {
         return columnNoItem;
     }
 
-    protected Collection<TeamModel> teamCollectionToTeamModelCollection(Collection<Team> collection) {
-        if ( collection == null ) {
-            return null;
-        }
-
-        Collection<TeamModel> collection1 = new ArrayList<TeamModel>( collection.size() );
-        for ( Team team : collection ) {
-            collection1.add( teamToTeamModel( team ) );
-        }
-
-        return collection1;
-    }
-
-    protected UserModel userNoTeamsToUserModel(UserNoTeams userNoTeams) {
-        if ( userNoTeams == null ) {
-            return null;
-        }
-
-        UserModel userModel = new UserModel();
-
-        userModel.setTeams( teamCollectionToTeamModelCollection( userNoTeams.getTeams() ) );
-        userModel.setId( userNoTeams.getId() );
-        userModel.setFirstName( userNoTeams.getFirstName() );
-        userModel.setLastName( userNoTeams.getLastName() );
-        userModel.setMail( userNoTeams.getMail() );
-        userModel.setAge( userNoTeams.getAge() );
-        userModel.setUsername( userNoTeams.getUsername() );
-        userModel.setPassword( userNoTeams.getPassword() );
-
-        return userModel;
-    }
-
     protected Set<UserModel> userNoTeamsHashSetToUserModelSet(HashSet<UserNoTeams> hashSet) {
         if ( hashSet == null ) {
             return null;
@@ -266,7 +206,7 @@ public class ItemMapperImpl implements ItemMapper {
 
         Set<UserModel> set = new LinkedHashSet<UserModel>( Math.max( (int) ( hashSet.size() / .75f ) + 1, 16 ) );
         for ( UserNoTeams userNoTeams : hashSet ) {
-            set.add( userNoTeamsToUserModel( userNoTeams ) );
+            set.add( userNoTeamsMapper.mapFromDto( userNoTeams ) );
         }
 
         return set;
